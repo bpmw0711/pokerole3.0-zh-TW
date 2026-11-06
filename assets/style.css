@@ -335,4 +335,93 @@ a.mv:hover{outline:2px solid var(--accent)}
   .ilist{grid-template-columns:minmax(0,1fr)}
   .mlist{grid-template-columns:1fr}
 }
+/* 角色卡示範：填寫寶可夢角色卡 */
+.sd{display:grid;gap:6px 28px;margin:8px 0 14px}
+.sd2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sd3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.sd1{grid-template-columns:minmax(0,300px)}
+.sd4{grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:6px 20px}
+.content .sd h5{margin:0 0 4px;font-size:14px;color:var(--muted);font-weight:600}
+.sd-row{display:flex;align-items:center;gap:8px;line-height:1.7;font-size:14.5px}
+.sd-n{flex:none;width:3em;font-weight:600}
+.sd-v{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}
+.pips{display:inline-flex;gap:3px}
+.pips i,.sd-legend i{display:inline-block;width:13px;height:13px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--muted)}
+.pips i.b,.sd-legend i.b{background:var(--ink);box-shadow:none}
+.pips i.a,.sd-legend i.a{background:var(--accent);box-shadow:none}
+.pips i.g,.sd-legend i.g{background:#3f8fd0;box-shadow:none}
+.content .sd-budget{display:flex;align-items:center;gap:7px;margin:4px 0}
+.content .sd-legend{display:flex;flex-wrap:wrap;align-items:center;gap:2px 14px;margin:8px 0 4px;font-size:13px;color:var(--muted)}
+.sd-legend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+@media (max-width:620px){.sd2,.sd3,.sd4{grid-template-columns:minmax(0,1fr)}}
+/* 隨機產生器 */
+.genwrap{display:grid;grid-template-columns:minmax(290px,340px) minmax(0,1fr);gap:24px;align-items:start}
+.genl{position:sticky;top:calc(var(--navh) + 10px);max-height:calc(100vh - var(--navh) - 20px);overflow:auto;scrollbar-width:thin;padding-right:4px}
+.genbox{background:var(--code);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.genbox .filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0}
+.genbox .filters input{grid-column:1/-1}
+.genbox .filters select{padding:5px 6px;min-width:0;width:100%}
+.genbox .filters.fold{display:none}
+.gcount{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 8px;margin-top:6px}
+.gcount .count{white-space:nowrap}
+.gcount .dacts{display:flex;gap:6px;margin-left:auto}
+.gcount .clear{white-space:nowrap}
+.gmain{display:grid;gap:8px}
+.gmain label{display:grid;gap:2px;font-size:13px;color:var(--muted);font-weight:600}
+.gmain select,.gform input,.gform select,.gmode,.gm select,.gnote{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;min-width:0;width:100%}
+.gbtn{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:9px 12px;font:inherit;font-weight:700;cursor:pointer}
+:root[data-theme="dark"] .gbtn{color:#222}
+.gbtn:hover{filter:brightness(1.08)}
+.gbtn:disabled,.clear:disabled{opacity:.45;cursor:default}
+.gtool{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px}
+.gfree{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--muted);margin-left:6px}
+.gmsg{font-size:13px;color:var(--accent)}
+#gsheet .dhero{margin-top:0}
+.gcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:0 28px}
+#gsheet .dsec h3{align-items:center}
+#gsheet .dsec h3 small.warn,.warn{color:var(--accent);font-weight:600;font-style:normal}
+#gsheet .dsec h3 small.left{color:var(--accent)}
+#gsheet .rr{margin-left:auto;font-weight:400}
+.gform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+.gfld{display:block;min-width:0}
+.gfld>span:first-child{display:block;font-size:12.5px;color:var(--muted);line-height:1.6}
+.grr{display:flex;gap:4px;align-items:center}
+.grr select{flex:1}
+.gpair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gcnt2{display:flex;align-items:center;gap:6px}
+.gb{flex:none;width:26px;height:26px;padding:0;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);font:inherit;font-size:15px;line-height:1;cursor:pointer}
+.gb:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.gb:disabled{opacity:.3;cursor:default}
+.gr{display:flex;align-items:center;gap:6px;min-height:32px;font-size:14.5px}
+.gr .pips{flex:1;flex-wrap:wrap;min-width:0}
+.gr .sd-v{margin-left:0;min-width:3.2em;text-align:right}
+.gr.over .sd-n,.gr.over .sd-v{color:var(--accent);font-weight:700}
+.gskills{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:4px 24px}
+.content .gskills h5{margin:4px 0 2px;font-size:13.5px;color:var(--muted);font-weight:600}
+.ge{font-size:13px;color:var(--muted);line-height:1.6;margin:6px 0 0}
+.ge b{color:var(--ink)}
+.gfacts{grid-template-columns:repeat(4,minmax(0,1fr))}
+.gsmall{margin-top:10px}
+.gsmall .fact b{font-size:14px}
+.gmxs{margin-top:10px;display:grid;gap:4px}
+.gmxs>div{display:flex;flex-wrap:wrap;align-items:center;gap:3px 4px}
+.gmxs>div>span:first-child{font-size:12.5px;color:var(--muted);margin-right:4px;min-width:2.2em}
+.gmx{display:inline-flex;align-items:center;gap:2px}
+.gmx b{font-size:12px}
+.gmx .tag{font-size:11.5px;padding:0 7px}
+.gm{background:var(--code);border-radius:10px;padding:7px 10px;margin-bottom:6px}
+.gm.over{outline:2px solid var(--accent)}
+.gm1{display:flex;align-items:center;gap:6px}
+.gmn{flex:none;font-size:13px;font-weight:700;color:var(--muted);width:1.2em;text-align:center}
+.gm1 select{flex:1}
+.gm2{display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;font-size:13px;margin-top:5px}
+.gm2 .tag{font-size:11.5px;padding:0 7px}
+.gm2 em{font-style:normal}
+.gm .ge{margin-top:3px}
+.gmode{width:auto;font-size:13px;padding:3px 6px}
+.gnote{display:block;resize:vertical;line-height:1.6}
+@media (max-width:980px){.genwrap{grid-template-columns:minmax(0,1fr)}.genl{position:static;max-height:none;overflow:visible;padding-right:0}}
+@media (max-width:620px){.tabs{gap:0}.tabs a{padding:6px 9px;font-size:14.5px}.gb{width:32px;height:32px}.gfacts{grid-template-columns:repeat(4,minmax(0,1fr))}.gfacts .fact{padding:5px 8px}.gfacts .fact b{font-size:15px}.gcnt2{gap:2px}.gpair{gap:6px}}
+@media print{.genl,.tabs,.gtool,.rr,.gb,.gmode,.foot{display:none!important}.genwrap{display:block}.gm select,.gform input,.gform select{border:0;background:none;appearance:none}.gm{break-inside:avoid}}
 @media print{.nav,#side,#menuBtn,.results,#toTop,.pn{display:none}.wrap{display:block}.inner{max-width:none}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gbtn{color:#222}}
