@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>寶可夢圖鑑 – 寶可夢扮演 3.0 Pokerole</title>
-<link rel="stylesheet" href="../assets/style.css?v=20261106184523">
+<link rel="stylesheet" href="../assets/style.css?v=20261106185157">
 <script>try{var t=localStorage.getItem('pk-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body data-root="../" class="k-data">
@@ -33,13 +33,14 @@
 (function(){
 var D=window.DEX,TC=window.TYPE_COLOR,INK=window.TYPE_INK,RZ=window.RANK_ZH,SZ=window.STAT_ZH,GZ=window.GEN_ZH;
 var IMG='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
+function capv(x,k){return k==='sum'?x.st.reduce(function(n,s){return n+s[1]},0):x.st[+k][1]}
 var wrap=document.getElementById('dexwrap'),grid=document.getElementById('grid'),det=document.getElementById('det'),q=document.getElementById('dq'),ft=document.getElementById('ft'),ft2=document.getElementById('ft2'),fg=document.getElementById('fg'),fr=document.getElementById('fr'),fs=document.getElementById('fs'),fo=document.getElementById('fo'),fd=document.getElementById('fd'),cnt=document.getElementById('dcnt'),rs=document.getElementById('dreset');
 var narrow=window.matchMedia('(max-width:980px)'),L=D,cur=-1,timer,dir=1;
 function pad(n){return n?'#'+String(n).padStart(3,'0'):''}
 function chip(t){return '<span class="tag" style="background:'+(TC[t]||'#888')+';color:'+(INK[t]||'#fff')+'">'+t+'</span>'}
 function card(x){var c=TC[x.ty[0]]||'#888',ink=INK[x.ty[0]]||'#fff';
  var bg=x.ty[1]?'linear-gradient(135deg,'+c+' 58%,'+(TC[x.ty[1]]||c)+')':c;
- return '<a class="dcard'+(x.i===cur?' sel':'')+'" href="#dex-'+x.i+'" data-i="'+x.i+'" style="background:'+bg+';color:'+ink+'"><small>'+pad(x.num)+'</small>'+(fo.value!==''?'<em class="dsv">'+SZ[+fo.value]+'上限 '+x.st[+fo.value][1]+'</em>':'')+'<b>'+(x.z||x.n)+'</b><small>'+x.n+'</small><div class="tags">'+x.ty.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div>'+(x.img?'<img class="spr" alt="" loading="lazy" width="64" height="64" src="'+IMG+x.img+'.png" onerror="this.remove()">':'')+'</a>'}
+ return '<a class="dcard'+(x.i===cur?' sel':'')+'" href="#dex-'+x.i+'" data-i="'+x.i+'" style="background:'+bg+';color:'+ink+'"><small>'+pad(x.num)+'</small>'+(fo.value!==''?'<em class="dsv">'+(fo.value==='sum'?'上限總和 ':SZ[+fo.value]+'上限 ')+capv(x,fo.value)+'</em>':'')+'<b>'+(x.z||x.n)+'</b><small>'+x.n+'</small><div class="tags">'+x.ty.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div>'+(x.img?'<img class="spr" alt="" loading="lazy" width="64" height="64" src="'+IMG+x.img+'.png" onerror="this.remove()">':'')+'</a>'}
 function match(x){var s=q.value.trim().toLowerCase();
  if(ft.value&&x.ty.indexOf(ft.value)<0)return false;
  if(ft2.value==='-'){if(x.ty.length!==1)return false}else if(ft2.value&&x.ty.indexOf(ft2.value)<0)return false;
@@ -50,7 +51,7 @@ function match(x){var s=q.value.trim().toLowerCase();
  var hay=(x.n+' '+x.z+' #'+x.num+' '+pad(x.num)+' '+x.ty.join(' ')+' '+x.ab.map(function(a){return a.n+' '+a.z}).join(' ')+' '+x.mv.map(function(m){return m.n+' '+m.z}).join(' ')).toLowerCase();
  return s.split(/\s+/).every(function(t){return hay.indexOf(t)>-1})}
 function render(){L=D.filter(match);
- var k=fo.value;L.sort(k===''?function(a,b){return (a.i-b.i)*dir}:function(a,b){return (a.st[+k][1]-b.st[+k][1])*dir||a.i-b.i});
+ var k=fo.value;L.sort(k===''?function(a,b){return (a.i-b.i)*dir}:function(a,b){return (capv(a,k)-capv(b,k))*dir||a.i-b.i});
  cnt.textContent=L.length+' / '+D.length+' 筆';
  fd.textContent=dir>0?'↑ 升序':'↓ 降序';fd.setAttribute('aria-label',dir>0?'目前升序，點一下改降序':'目前降序，點一下改升序');
  rs.hidden=!(q.value||ft.value||ft2.value||fg.value||fr.value||fs.value||k!==''||dir<0);
@@ -97,7 +98,7 @@ var tops=Object.keys(TC).filter(function(t){return t!=='無'}).map(function(t){r
 ft.innerHTML='<option value="">屬性（不限）</option>'+tops;
 ft2.innerHTML='<option value="">第二屬性（不限）</option><option value="-">只有單一屬性</option>'+tops;
 fg.innerHTML='<option value="">全部世代</option>'+Object.keys(GZ).map(function(k){return '<option value="'+k+'">'+GZ[k]+'</option>'}).join('');
-fo.innerHTML='<option value="">依圖鑑編號排序</option>'+SZ.map(function(t,k){return '<option value="'+k+'">依'+t+'上限排序</option>'}).join('');
+fo.innerHTML='<option value="">依圖鑑編號排序</option>'+SZ.map(function(t,k){return '<option value="'+k+'">依'+t+'上限排序</option>'}).join('')+'<option value="sum">依上限總和排序</option>';
 fr.innerHTML='<option value="">全部階級</option>'+Object.keys(RZ).map(function(k){return '<option value="'+k+'">'+RZ[k]+'</option>'}).join('');
 fs.innerHTML='<option value="">全部進化階段</option><option>初階</option><option>二階</option><option>最終階</option><option>超級進化</option><option>未知</option>';
 var pq=location.search.match(/[?&]q=([^&]+)/);if(pq)q.value=decodeURIComponent(pq[1]);
@@ -107,8 +108,8 @@ render();fromHash();window.addEventListener('hashchange',fromHash);
   </div></main>
 </div>
 <footer class="foot">《Pokérole Project Core Book 3.0》非官方繁體中文版。寶可夢相關名稱版權屬 Nintendo／Creatures／Game Freak。</footer>
-<script src="../assets/glossary.js?v=20261106184523"></script>
-<script src="../assets/search-index.js?v=20261106184523"></script>
-<script src="../assets/app.js?v=20261106184523"></script>
+<script src="../assets/glossary.js?v=20261106185157"></script>
+<script src="../assets/search-index.js?v=20261106185157"></script>
+<script src="../assets/app.js?v=20261106185157"></script>
 </body>
 </html>
