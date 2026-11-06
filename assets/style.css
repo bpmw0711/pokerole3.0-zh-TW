@@ -214,8 +214,10 @@ body.bi .en-o{display:block}
 .sortbox select{flex:1}
 #fd{flex:none;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;padding:4px 10px;cursor:pointer;white-space:nowrap}
 #fd:hover{border-color:var(--accent);color:var(--accent)}
-.dexl .count{grid-column:1/4;align-self:center}
-.dexl .clear{grid-column:4/-1;justify-self:end}
+.dexl .count{grid-column:1/4;align-self:center;white-space:nowrap}
+.dexl .dacts{grid-column:4/-1;justify-self:end;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.dexl .clear{white-space:nowrap}
+.dexl .filters.fold>input,.dexl .filters.fold>select,.dexl .filters.fold>.sortbox{display:none}
 #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;padding:2px}
 .dcard{position:relative;display:block;min-height:96px;border-radius:12px;padding:7px 10px;text-decoration:none;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.25);outline-offset:1px}
 .dcard:hover{filter:brightness(1.06)}
