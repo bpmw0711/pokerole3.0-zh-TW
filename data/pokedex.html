@@ -7,7 +7,7 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-<link rel="stylesheet" href="../assets/style.css?v=20261107202454">
+<link rel="stylesheet" href="../assets/style.css?v=20261107225904">
 <script>try{var t=localStorage.getItem('pk-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body data-root="../" class="k-data">
@@ -35,7 +35,7 @@
 <script>
 (function(){
 var D=window.DEX,TC=window.TYPE_COLOR,INK=window.TYPE_INK,RZ=window.RANK_ZH,SZ=window.STAT_ZH,GZ=window.GEN_ZH;
-var IMG='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
+var IMG='../assets/art/';
 function capv(x,k){return k==='sum'?x.st.reduce(function(n,s){return n+s[1]},0):x.st[+k][1]}
 var wrap=document.getElementById('dexwrap'),grid=document.getElementById('grid'),det=document.getElementById('det'),q=document.getElementById('dq'),ft=document.getElementById('ft'),ft2=document.getElementById('ft2'),fg=document.getElementById('fg'),fr=document.getElementById('fr'),fs=document.getElementById('fs'),fo=document.getElementById('fo'),fd=document.getElementById('fd'),cnt=document.getElementById('dcnt'),rs=document.getElementById('dreset');
 var narrow=window.matchMedia('(max-width:980px)'),L=D,cur=-1,timer,dir=1;
@@ -45,7 +45,7 @@ function flv(x){if(!x.fe)return '';return x.fl?'<p class="flv">'+esc(x.fl)+'<spa
 function chip(t){return '<span class="tag" style="background:'+(TC[t]||'#888')+';color:'+(INK[t]||'#fff')+'">'+t+'</span>'}
 function card(x){var c=TC[x.ty[0]]||'#888',ink=INK[x.ty[0]]||'#fff';
  var bg=x.ty[1]?'linear-gradient(135deg,'+c+' 58%,'+(TC[x.ty[1]]||c)+')':c;
- return '<a class="dcard'+(x.i===cur?' sel':'')+'" href="#dex-'+x.i+'" data-i="'+x.i+'" style="background:'+bg+';color:'+ink+'"><small>'+pad(x.num)+'</small>'+(fo.value!==''?'<em class="dsv">'+(fo.value==='sum'?'上限總和 ':SZ[+fo.value]+'上限 ')+capv(x,fo.value)+'</em>':'')+'<b>'+(x.z||x.n)+'</b><small>'+x.n+'</small><div class="tags">'+x.ty.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div>'+(x.img?'<img class="spr" alt="" loading="lazy" width="64" height="64" src="'+IMG+x.img+'.png" onerror="this.remove()">':'')+'</a>'}
+ return '<a class="dcard'+(x.i===cur?' sel':'')+'" href="#dex-'+x.i+'" data-i="'+x.i+'" style="background:'+bg+';color:'+ink+'"><small>'+pad(x.num)+'</small>'+(fo.value!==''?'<em class="dsv">'+(fo.value==='sum'?'上限總和 ':SZ[+fo.value]+'上限 ')+capv(x,fo.value)+'</em>':'')+'<b>'+(x.z||x.n)+'</b><small>'+x.n+'</small><div class="tags">'+x.ty.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div>'+(x.img?'<img class="spr" alt="" loading="lazy" width="64" height="64" src="'+IMG+x.img+'.webp" onerror="this.remove()">':'')+'</a>'}
 var exM='',exA='';
 function abn(a){return a.n.replace(/ \(Hidden\)/,'').toLowerCase()}
 function match(x){var s=(exM||exA)?'':q.value.trim().toLowerCase();
@@ -75,7 +75,7 @@ function navBtn(x,cls){return x?'<a class="'+cls+'" href="#dex-'+x.i+'" data-i="
 function show(i){var x=D[i];if(!x)return;cur=i;
  var c=TC[x.ty[0]]||'#888';
  var list=L.indexOf(x)>-1?L:D,pos=list.indexOf(x);
- var img=x.img?'<img alt="'+(x.z||x.n)+'" src="'+IMG+'other/official-artwork/'+x.img+'.png" onerror="this.style.display=\'none\'">':'';
+ var img=x.img?'<img alt="'+(x.z||x.n)+'" src="'+IMG+x.img+'.webp" onerror="this.style.display=\'none\'">':'';
  var byr={};x.mv.forEach(function(m){(byr[m.r]=byr[m.r]||[]).push(m)});
  var mh=Object.keys(byr).sort(function(a,b){return a-b}).map(function(r){return '<h4>'+(RZ[r]||'未標示階級')+'<small>'+byr[r].length+' 招</small></h4><div class="mlist">'+byr[r].map(function(m){var tag=(m.k?'a':'span'),href=m.k?' href="moves.html?n='+encodeURIComponent(m.k)+'"':'';return '<'+tag+' class="mv"'+href+'>'+chip(m.t)+'<b>'+(m.z||m.n)+'</b>'+(m.z?'<small>'+m.n+'</small>':'')+'</'+tag+'>'}).join('')+'</div>'}).join('');
  var abil=x.ab.map(function(a){var hid=/\(Hidden\)/.test(a.n),en=a.n.replace(/ \(Hidden\)/,'');return '<a class="ab" href="abilities.html?n='+encodeURIComponent(en)+'"><b>'+(a.z||en)+'</b>'+(a.z?'<small>'+en+'</small>':'')+(hid?'<em>隱藏特性</em>':'')+'</a>'}).join('');
@@ -129,8 +129,8 @@ render();fromHash();window.addEventListener('hashchange',fromHash);
   </div></main>
 </div>
 <footer class="foot">《Pokérole Project Core Book 3.0》非官方繁體中文版。寶可夢相關名稱版權屬 Nintendo／Creatures／Game Freak。</footer>
-<script src="../assets/glossary.js?v=20261107202454"></script>
-<script src="../assets/search-index.js?v=20261107202454"></script>
-<script src="../assets/app.js?v=20261107202454"></script>
+<script src="../assets/glossary.js?v=20261107225904"></script>
+<script src="../assets/search-index.js?v=20261107225904"></script>
+<script src="../assets/app.js?v=20261107225904"></script>
 </body>
 </html>

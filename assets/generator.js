@@ -1,7 +1,7 @@
 // 隨機產生器：資料在 generator-data.js（由 tools/build_data.py 產生），這支是手寫的互動程式。
 (function(){
 var G=window.GEN,D=G.dex,MV=G.moves,AB=G.abilities,NA=G.natures,CH=G.chart,TC=G.typeColor,INK=G.typeInk,RZ=G.rankZh,SZ=G.statZh,GZ=G.genZh;
-var IMG='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+var IMG='../assets/art/';
 var SOC=['強壯','帥氣','美麗','聰明','可愛'];
 var SKG=[['戰鬥類',['鬥毆','導引','對抗','閃避']],['生存類',['警覺','運動','自然','隱匿']],['社交類',['魅惑','禮儀','威嚇','表演']]];
 var SK=[];SKG.forEach(function(g){SK=SK.concat(g[1])});
