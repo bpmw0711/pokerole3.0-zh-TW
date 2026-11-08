@@ -1,0 +1,100 @@
+name: Build APK
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 版本號（例如 1.0.0）
+        required: true
+        default: 1.0.0
+permissions:
+  contents: write
+env:
+  APP_URL: https://bpmw0711.github.io/pokerole3.0-zh-TW/
+  APP_NAME: Pokerole 3.0 規則
+  PACKAGE_NAME: io.github.bpmw0711.pokerole
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: android-wrapper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+          cache: gradle
+      - uses: android-actions/setup-android@v3
+      - name: 帶入參數
+        env:
+          IN_VERSION_NAME: ${{ github.event.inputs.version_name }}
+        run: |
+          python3 - <<'PY'
+          import os
+          def rep(path, m):
+              s = open(path, encoding='utf-8').read()
+              for a, b in m.items(): s = s.replace(a, b)
+              open(path, 'w', encoding='utf-8').write(s)
+          url, name, pkg, ver = os.environ['APP_URL'], os.environ['APP_NAME'], os.environ['PACKAGE_NAME'], os.environ['IN_VERSION_NAME']
+          p = (ver.split('.') + ['0', '0', '0'])[:3]
+          try: vc = int(p[0]) * 10000 + int(p[1]) * 100 + int(p[2])
+          except ValueError: vc = 1
+          rep('app/src/main/java/com/webviewapp/MainActivity.kt', {'{{APP_URL}}': url})
+          rep('app/src/main/AndroidManifest.xml', {'{{APP_PACKAGE}}': pkg, '{{APP_NAME}}': name})
+          rep('app/build.gradle', {'{{APP_PACKAGE}}': pkg, '{{VERSION_NAME}}': ver, '{{VERSION_CODE}}': str(vc)})
+          rep('app/src/main/res/values/strings.xml', {'{{APP_NAME}}': name})
+          pp = pkg.replace('.', '/')
+          os.makedirs(f'app/src/main/java/{pp}', exist_ok=True)
+          d = 'app/src/main/java/com/webviewapp'
+          for f in os.listdir(d):
+              if f.endswith('.kt'):
+                  rep(os.path.join(d, f), {'package com.webviewapp': f'package {pkg}'})
+                  os.rename(os.path.join(d, f), f'app/src/main/java/{pp}/{f}')
+          rep('app/src/main/res/layout/activity_main.xml', {'com.webviewapp': pkg})
+          PY
+      - name: 圖示
+        run: |
+          pip install Pillow -q
+          python3 Scripts/process_icon.py
+      - name: 組建
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
+      - name: 簽章
+        env:
+          KS_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          KS_PASS_S: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS_S: ${{ secrets.KEY_ALIAS }}
+          KEY_PASS_S: ${{ secrets.KEY_PASSWORD }}
+          IN_VERSION_NAME: ${{ github.event.inputs.version_name }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 --decode > /tmp/release.keystore
+            KS_PASS="$KS_PASS_S"; KEY_ALIAS="${KEY_ALIAS_S:-release}"; KEY_PASS="$KEY_PASS_S"
+          else
+            echo "::warning::沒有設定 keystore secrets，使用臨時簽章；之後的版本無法直接覆蓋安裝，需先解除安裝舊版"
+            keytool -genkey -keystore /tmp/release.keystore -alias debugkey -keyalg RSA -keysize 2048 -validity 3650 -storepass android -keypass android -dname "CN=Debug,O=Debug,C=US" -noprompt
+            KS_PASS=android; KEY_ALIAS=debugkey; KEY_PASS=android
+          fi
+          BT=$(ls $ANDROID_HOME/build-tools/ | sort -V | tail -1)
+          mkdir -p /tmp/signed
+          for ABI in arm64-v8a armeabi-v7a; do
+            APK=$(find app/build -type f -name "*${ABI}*release*.apk" | head -1)
+            [ -z "$APK" ] && { echo "找不到 $ABI 的 APK" >&2; exit 1; }
+            $ANDROID_HOME/build-tools/$BT/zipalign -p 4 "$APK" /tmp/aligned_$ABI.apk
+            OUT="/tmp/signed/Pokerole_${IN_VERSION_NAME}_${ABI}.apk"
+            $ANDROID_HOME/build-tools/$BT/apksigner sign --ks /tmp/release.keystore --ks-pass "pass:$KS_PASS" --ks-key-alias "$KEY_ALIAS" --key-pass "pass:$KEY_PASS" --out "$OUT" /tmp/aligned_$ABI.apk
+            $ANDROID_HOME/build-tools/$BT/apksigner verify "$OUT"
+          done
+          ls -la /tmp/signed
+      - name: 發佈 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IN_VERSION_NAME: ${{ github.event.inputs.version_name }}
+        run: |
+          gh release create "apk-v${IN_VERSION_NAME}" /tmp/signed/*.apk \
+            --repo "${{ github.repository }}" \
+            --title "Android APK v${IN_VERSION_NAME}" \
+            --notes "連線版 APK（內容與網頁同步）。大多數手機請下載 arm64-v8a；較舊的 32 位元手機下載 armeabi-v7a。網頁更新不需要重新安裝。"
