@@ -14,19 +14,24 @@ env:
   PACKAGE_NAME: io.github.bpmw0711.pokerole
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     defaults:
       run:
         working-directory: android-wrapper
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: temurin
           cache: gradle
-      - uses: android-actions/setup-android@v3
+      # runner 已內建 Android SDK，不另外安裝（setup-android 在新版 runner 會失敗）
+      - name: 確認 SDK 元件
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses >/dev/null || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
       - name: 帶入參數
         env:
           IN_VERSION_NAME: ${{ github.event.inputs.version_name }}

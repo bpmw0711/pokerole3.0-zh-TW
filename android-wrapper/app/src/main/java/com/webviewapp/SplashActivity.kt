@@ -24,15 +24,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        val agreed = prefs.getBoolean("disc_agreed", false)
 
         launchRunnable = Runnable {
             if (!isFinishing) {
-                if (agreed) {
-                    startActivity(Intent(this, MainActivity::class.java))
-                } else {
-                    startActivity(Intent(this, DisclaimerActivity::class.java))
-                }
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }
