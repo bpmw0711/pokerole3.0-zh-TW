@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#c4302b">
-<link rel="stylesheet" href="../assets/style.css?v=20261108225105">
+<link rel="stylesheet" href="../assets/style.css?v=20261109161706">
 <script>try{var t=localStorage.getItem('pk-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}if('serviceWorker'in navigator)addEventListener('load',function(){navigator.serviceWorker.register('../sw.js').catch(function(){})})</script>
 </head>
 <body data-root="../" class="k-data">
@@ -37,7 +37,7 @@
 <script>
 (function(){
 var D=window.DEX,TC=window.TYPE_COLOR,INK=window.TYPE_INK,RZ=window.RANK_ZH,SZ=window.STAT_ZH,GZ=window.GEN_ZH;
-var IMG='../assets/art/';
+var IMG='../assets/art/',SPR='../assets/spr/';
 function capv(x,k){return k==='sum'?x.st.reduce(function(n,s){return n+s[1]},0):x.st[+k][1]}
 var wrap=document.getElementById('dexwrap'),grid=document.getElementById('grid'),det=document.getElementById('det'),q=document.getElementById('dq'),ft=document.getElementById('ft'),ft2=document.getElementById('ft2'),fg=document.getElementById('fg'),fr=document.getElementById('fr'),fs=document.getElementById('fs'),fo=document.getElementById('fo'),fd=document.getElementById('fd'),cnt=document.getElementById('dcnt'),rs=document.getElementById('dreset');
 var narrow=window.matchMedia('(max-width:980px)'),L=D,cur=-1,timer,dir=1;
@@ -47,7 +47,7 @@ function flv(x){if(!x.fe)return '';return x.fl?'<p class="flv">'+esc(x.fl)+'<spa
 function chip(t){return '<span class="tag" style="background:'+(TC[t]||'#888')+';color:'+(INK[t]||'#fff')+'">'+t+'</span>'}
 function card(x){var c=TC[x.ty[0]]||'#888',ink=INK[x.ty[0]]||'#fff';
  var bg=x.ty[1]?'linear-gradient(135deg,'+c+' 58%,'+(TC[x.ty[1]]||c)+')':c;
- return '<a class="dcard'+(x.i===cur?' sel':'')+'" href="#dex-'+x.i+'" data-i="'+x.i+'" style="background:'+bg+';color:'+ink+'"><small>'+pad(x.num)+'</small>'+(fo.value!==''?'<em class="dsv">'+(fo.value==='sum'?'上限總和 ':SZ[+fo.value]+'上限 ')+capv(x,fo.value)+'</em>':'')+'<b>'+(x.z||x.n)+'</b><small>'+x.n+'</small><div class="tags">'+x.ty.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div>'+(x.img?'<img class="spr" alt="" loading="lazy" width="64" height="64" src="'+IMG+x.img+'.webp" onerror="this.remove()">':'')+'</a>'}
+ return '<a class="dcard'+(x.i===cur?' sel':'')+'" href="#dex-'+x.i+'" data-i="'+x.i+'" style="background:'+bg+';color:'+ink+'"><small>'+pad(x.num)+'</small>'+(fo.value!==''?'<em class="dsv">'+(fo.value==='sum'?'上限總和 ':SZ[+fo.value]+'上限 ')+capv(x,fo.value)+'</em>':'')+'<b>'+(x.z||x.n)+'</b><small>'+x.n+'</small><div class="tags">'+x.ty.map(function(t){return '<span class="tag">'+t+'</span>'}).join('')+'</div>'+(x.img?'<img class="spr" alt="" loading="lazy" width="64" height="64" src="'+SPR+x.img+'.png" onerror="this.remove()">':'')+'</a>'}
 var exM='',exA='';
 function abn(a){return a.n.replace(/ \(Hidden\)/,'').toLowerCase()}
 function match(x){var s=(exM||exA)?'':q.value.trim().toLowerCase();
@@ -131,8 +131,8 @@ render();fromHash();window.addEventListener('hashchange',fromHash);
   </div></main>
 </div>
 <footer class="foot">《Pokérole Project Core Book 3.0》非官方繁體中文版。寶可夢相關名稱版權屬 Nintendo／Creatures／Game Freak。</footer>
-<script src="../assets/glossary.js?v=20261108225105"></script>
-<script src="../assets/search-index.js?v=20261108225105"></script>
-<script src="../assets/app.js?v=20261108225105"></script>
+<script src="../assets/glossary.js?v=20261109161706"></script>
+<script src="../assets/search-index.js?v=20261109161706"></script>
+<script src="../assets/app.js?v=20261109161706"></script>
 </body>
 </html>
